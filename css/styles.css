@@ -78,6 +78,11 @@ body {
 
 /* Custom Styles */
 
+.brand-logo img{
+    max-height:4rem;
+}
+  
+
 .card-content > p:first-of-type{
     font-style: italic;
     margin-bottom: 1rem;
