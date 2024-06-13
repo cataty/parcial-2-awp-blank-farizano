@@ -1,22 +1,73 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bellota:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
 
-*{
 
-}
+/* General */
 
-body{
-    font-family: "Noto Sans", sans-serif;
+body {
+    font-family: "Nunito Sans", sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
     font-variation-settings:
     "wdth" 100;
+    font-size: 16px; /* 1 rem */
 }
 
-h1, h2, h3, .title{
-    font-family: "Roboto Slab", serif;
-    font-optical-sizing: auto;
+
+/* Typography classes */
+
+.bellota-light {
+    font-family: "Bellota", system-ui;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .bellota-regular {
+    font-family: "Bellota", system-ui;
     font-weight: 400;
     font-style: normal;
+  }
+  
+  .bellota-bold {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .bellota-light-italic {
+    font-family: "Bellota", system-ui;
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .bellota-regular-italic {
+    font-family: "Bellota", system-ui;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .bellota-bold-italic {
+    font-family: "Bellota", system-ui;
+    font-weight: 700;
+    font-style: italic;
+  }
+  
+
+.nunito-sans{
+    font-family: "Nunito Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+      "wdth" 100,
+      "YTLC" 500;
 }
+  
+
+/* Custom Styles */
+
+.card-content > p:first-of-type{
+    font-style: italic;
+    margin-bottom: 1rem;
+}
+
