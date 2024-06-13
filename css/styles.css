@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Bellota:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Sanchez:ital@0;1&display=swap');
 
 /* General */
 
@@ -13,7 +13,6 @@ body {
     "wdth" 100;
     font-size: 16px; /* 1 rem */
 }
-
 
 /* Typography classes */
 
@@ -62,6 +61,19 @@ body {
       "wdth" 100,
       "YTLC" 500;
 }
+
+.sanchez-regular {
+    font-family: "Sanchez", serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .sanchez-regular-italic {
+    font-family: "Sanchez", serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
   
 
 /* Custom Styles */
