@@ -91,6 +91,10 @@ body {
 
 /* Custom Styles */
 
+nav{
+  padding:0.5rem 5rem;
+}
+
 .container{
   padding-top:3rem;
   padding-bottom:3rem;
@@ -102,6 +106,7 @@ body {
 
 .brand-logo img{
     max-height:4rem;
+    padding-bottom:1rem;
 }
 
 .row.flexbox{
@@ -114,6 +119,10 @@ body {
 }
 .row.flexbox .card{
   flex: 1;
+}
+
+nav ul li .btn{
+  margin-bottom:1rem;
 }
 
 .card-list{
