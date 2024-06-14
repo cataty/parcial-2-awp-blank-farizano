@@ -95,6 +95,18 @@ body {
     max-height:4rem;
 }
 
+.row.flexbox{
+  display: flex;
+  flex-wrap: wrap;
+}
+.row.flexbox .col {
+    display: flex;
+    flex-direction: column;
+}
+.row.flexbox .card{
+  flex: 1;
+}
+
 .card-list{
     display: flex;
     align-items: center;
