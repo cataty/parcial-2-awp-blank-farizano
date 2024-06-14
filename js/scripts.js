@@ -1,4 +1,8 @@
 
+if ('serviceWorker' in navigator){
+    navigator.serviceWorker.register('../sw.js');
+}
+
 const token = "sk-cIK4666b199c48f9f5915";
 
 const getEdiblePlants = async () => {
@@ -21,6 +25,10 @@ const getPlant = async (id) => {
         };
     })
     .catch(error => console.log('error', error));
+}
+
+const getUserPlants = (userId) => {
+    getEdiblePlants(); // por ahora. TODO: traer las plantas del usuario
 }
 
 const create404 = () => {} // TODO: crear 404
@@ -118,8 +126,10 @@ const renderDetails = (plant) => {
 window.addEventListener("DOMContentLoaded", (e) => {
     if (window.location.href.includes('index.html')){
         getEdiblePlants();
-    } else {
+    } else if (window.location.href.includes('plant.html')) {
         const searchParams = new URLSearchParams(window.location.search);
         getPlant(searchParams.get('id'));
+    } else if (window.location.href.includes('my-plants.html')){
+        getUserPlants(userId); // corregir cunado tengamos la autentificación de usuario
     }
 });
