@@ -37,9 +37,9 @@ const renderCard = (plant, containerID) => {
                 </div>
                 <div class="card-content">
                     <p>${plant.scientific_name[0]}</p>
-                    <p><img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"> ${plant.watering}</p>
-                    <p><img class="list-icon" src="/img/icon-sun.svg" alt="icon sun"> <span>${plant.pruning_month[0]}</span><span>${plant.sunlight[1]}</span></p>
-                    <p><img class="list-icon" src="/img/icon-cycle.svg" alt="icon cycle">  ${plant.cycle}</p>
+                    <p class="card-list"><img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"> ${plant.watering}</p>
+                    <p class="card-list"><img class="list-icon" src="/img/icon-sun.svg" alt="icon sun"> ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "" )}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "" )}</li>
+                    <p class="card-list"><img class="list-icon" src="/img/icon-cycle.svg" alt="icon cycle">  ${plant.cycle}</p>
                 </div>
                 <div class="card-action">
                     <a class="green-text text-accent-4" href="plant.html?id=${plant.id}">Learn more</a>

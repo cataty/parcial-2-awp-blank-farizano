@@ -11,12 +11,14 @@
     --green: #00e676;
     --darker-green: #00c853;
     --dark-green: #008035;
+    --text-green: #002610;
     --body-font: "Nunito Sans", sans-serif;
     --extra-font: "Sanchez", serif;
 }
 
 body {
     font-family: var(--body-font);
+    color: var(--text-green);
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -93,21 +95,29 @@ body {
     max-height:4rem;
 }
 
+.card-list{
+    display: flex;
+    align-items: center;
+    padding:0.5rem;
+}
+
 .list-icon{
     max-width:2rem;
-    padding-top:0.5rem;
+    margin-right:0.75rem;
 }
-  
 
-  
+h1, h3 {
+    color: var(--darker-green);
+}
+
 h2.card-title {
     font-size: 3rem !important;
     font-weight:bold !important;
     background: var(--dark-green);
-    background
   }
 
-h3{
+.card h3{
+    font-size: 2rem;
     font-family: var(--extra-font);
 }
 
