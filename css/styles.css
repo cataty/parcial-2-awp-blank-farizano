@@ -4,8 +4,19 @@
 
 /* General */
 
+:root {
+    --lightest-green: #edf2f0;
+    --light-green: #b9f6ca;
+    --lighter-green: #69f0ae;
+    --green: #00e676;
+    --darker-green: #00c853;
+    --dark-green: #008035;
+    --body-font: "Nunito Sans", sans-serif;
+    --extra-font: "Sanchez", serif;
+}
+
 body {
-    font-family: "Nunito Sans", sans-serif;
+    font-family: var(--body-font);
     font-optical-sizing: auto;
     font-weight: 400;
     font-style: normal;
@@ -81,7 +92,24 @@ body {
 .brand-logo img{
     max-height:4rem;
 }
+
+.list-icon{
+    max-width:2rem;
+    padding-top:0.5rem;
+}
   
+
+  
+h2.card-title {
+    font-size: 3rem !important;
+    font-weight:bold !important;
+    background: var(--dark-green);
+    background
+  }
+
+h3{
+    font-family: var(--extra-font);
+}
 
 .card-content > p:first-of-type{
     font-style: italic;

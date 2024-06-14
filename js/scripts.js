@@ -1,3 +1,4 @@
+
 const token = "sk-cIK4666b199c48f9f5915";
 
 const getEdiblePlants = async () => {
@@ -36,9 +37,9 @@ const renderCard = (plant, containerID) => {
                 </div>
                 <div class="card-content">
                     <p>${plant.scientific_name[0]}</p>
-                    <p>watering: ${plant.watering}</p>
-                    <p>sunlight: <span>${plant.sunlight[0]}</span><span>${plant.sunlight[1]}</span></p>
-                    <p>cycle: ${plant.cycle}</p>
+                    <p><img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"> ${plant.watering}</p>
+                    <p><img class="list-icon" src="/img/icon-sun.svg" alt="icon sun"> <span>${plant.pruning_month[0]}</span><span>${plant.sunlight[1]}</span></p>
+                    <p><img class="list-icon" src="/img/icon-cycle.svg" alt="icon cycle">  ${plant.cycle}</p>
                 </div>
                 <div class="card-action">
                     <a class="green-text text-accent-4" href="plant.html?id=${plant.id}">Learn more</a>
@@ -55,39 +56,63 @@ const renderDetails = (plant) => {
     const plantCard = `
         <div class="col s12 m12 l12">
             <div class="card">
-                    <div class="card-image">
-          <img src="${plant.default_image.regular_url}" alt="${plant.name}">
-          <span class="card-title">${plant.name}</span>
-          <a class="btn-floating halfway-fab waves-effect waves-light green-accent-2"><i class="material-icons">add</i></a>
+                <div class="card-image">
+                    <img src="${plant.default_image.regular_url}" alt="${plant.name}">
+                    <h2 class="card-title">${plant.common_name}</h2>
+                </div>
                 <div class="card-content">
-                <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+                    <p>${plant.description}</p>
                 </div>
                 <div class="card-tabs">
-                <ul class="tabs tabs-fixed-width">
-                    <li class="tab"><a href="#test4">Test 1</a></li>
-                    <li class="tab"><a class="active" href="#test5">Test 2</a></li>
-                    <li class="tab"><a href="#test6">Test 3</a></li>
-                </ul>
-                </div>
-                <div class="card-content grey lighten-4">
-                <div id="test4">Test 1</div>
-                <div id="test5">
-                    <h3>Growing information<h3>
-                    <h4>Watering</h4>
-                    <ul>
-                        <li>frequency: ${plant.watering}</li>
-                        <li>time period:  ${plant.watering_period}</li>
-                        <li>recomendation: ${plant.watering_general_benchmark.value} ${plant.watering_general_benchmark.unit} </li>
-                        <li>watering depth: ${plant.depth_water_requirement.value} ${plant.depth_water_requirement.unit}</li>
+                    <ul class="tabs tabs-fixed-width">
+                        <li class="tab"><a href="#plant-data">Data</a></li>
+                        <li class="tab"><a href="#plant-care">Care</a></li>
+                        <li class="tab"><a href="#test6">Test 3</a></li>
                     </ul>
                 </div>
-                <div id="test6">Test 3</div>
+                <div class="card-content grey lighten-4">
+                    <div id="plant-data" class="active">
+                        <h3>Plant Data</h3>
+                        <ul>
+                            <li>type: ${plant.type}</li>
+                            <li>family: ${plant.family}</li>
+                            <li>cycle:  ${(plant.cycle)}</li>
+                            <li>growth rate:  ${(plant.growth_rate)}</li>
+                            <li>care level: ${(plant.care_level ? plant.care_level : "?")}</li>
+                            <li>harvest season: ${(plant.harvest_season ? plant.harvest_season : "?")}</li>
+                            <li>propagatation:  ${(plant.propagation[0])}${(plant.propagation[1] ? ", " + plant.propagation[1] : "" )}${(plant.propagation[2] ? ", " + plant.propagation[2] : "" )}</li>
+                        </ul>
+                    </div>
+                    <div id="plant-care">
+                        <h3>Watering</h3>
+                        <ul>
+                            <li>frequency: ${plant.watering}</li>
+                            <li>time of the day:  ${(plant.watering_period ? plant.watering_period : "?")}</li>
+                            <li>recomendation: once every ${(plant.watering_general_benchmark.value ? plant.watering_general_benchmark.value : "?")} ${plant.watering_general_benchmark.unit} </li>
+                            <li>amount of water: ${(plant.volume_water_requirement.value ? plant.volume_water_requirement.value : "?")} ${(plant.volume_water_requirement.unit ? plant.volume_water_requirement.unit : "")}</li>
+                        </ul>
+                        <h3>Conditions and Care</h3>
+                        <ul>
+                            <li>soil: ${plant.soil}</li>
+                            <li>sunlight:  ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "" )}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "" )}</li> 
+                            <li>pruning: ${(plant.pruning_count.amount ? plant.pruning_count.amount : "?")} ${plant.pruning_count.interval} </li>
+                            <li>pruning months: ${(plant.pruning_month[0])}${(plant.pruning_month[1] ? ", " + plant.pruning_month[1] : "" )}${(plant.pruning_month[2] ? ", " + plant.pruning_month[2] : "" )}${(plant.pruning_month[3] ? ", " + plant.pruning_month[3] : "" )}</li>
+                        </ul>
+                    </div>
+                    <div id="test6">Test 3</div>
                 </div>
             </div>
         </div>
     `
     plantContainer.innerHTML += plantCard;
+    var instance = M.Tabs.init(document.querySelector('.card-tabs'), {});
+    instance.select('tab_id');
+    $('.tabs').tabs();
 }
+
+/* <ul>
+
+</ul> */
 
 
 window.addEventListener("DOMContentLoaded", (e) => {
