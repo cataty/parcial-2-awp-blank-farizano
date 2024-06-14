@@ -5,7 +5,7 @@
 /* General */
 
 :root {
-    --lightest-green: #edf2f0;
+    --lightest-green: #f0f7f4;
     --light-green: #b9f6ca;
     --lighter-green: #69f0ae;
     --green: #00e676;
@@ -90,6 +90,15 @@ body {
   
 
 /* Custom Styles */
+
+.container{
+  padding-top:3rem;
+  padding-bottom:3rem;
+}
+
+.bg-light{
+  background-color: var(--lightest-green);
+}
 
 .brand-logo img{
     max-height:4rem;
