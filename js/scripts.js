@@ -25,6 +25,8 @@ const getEdiblePlants = async (containerId) => {
         renderCard(plant, containerId);
     }))
     .catch(error => console.log('error', error));
+    const preloader = document.querySelector(".preloader-wrapper");
+    document.getElementById(containerId).removeChild(preloader);
 }
 
 const getPlant = async (id) => {
