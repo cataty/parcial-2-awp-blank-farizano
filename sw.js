@@ -38,7 +38,6 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', (event) => {
-    console.log("cache dinamica")
     const query = event.request;
     const cachedResponse = caches.match(query).then(async (response) => {
         if(response) return response; // si está en el cache, traer del cache
