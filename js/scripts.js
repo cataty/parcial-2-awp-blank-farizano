@@ -2,14 +2,27 @@
 if ('serviceWorker' in navigator){
     navigator.serviceWorker.register('../sw.js');
 }
-
 const token = "sk-cIK4666b199c48f9f5915";
 
-const getEdiblePlants = async () => {
+const replacePlaceholderImgs = () => { // para implementar eventualmente
+    // funcióna con el formato <img src="data/img/placeholder.png" data-src="data/img/image.jpg" alt="name" />
+    let imagesToLoad = document.querySelectorAll("img[data-src]");
+    const loadImages = (image) => {
+        image.setAttribute("src", image.getAttribute("data-src"));
+        image.onload = () => {
+        image.removeAttribute("data-src");
+    };
+    };
+    imagesToLoad.forEach((img) => {
+        loadImages(img);
+    });
+}
+
+const getEdiblePlants = async (containerId) => {
     await fetch(`https://perenual.com/api/species-list?key=${token}&edible=1`)
     .then(response => response.json())
     .then(response => response.data.forEach(plant => {
-        renderCard(plant, "ediblePlantsContainer");
+        renderCard(plant, containerId);
     }))
     .catch(error => console.log('error', error));
 }
@@ -27,30 +40,55 @@ const getPlant = async (id) => {
     .catch(error => console.log('error', error));
 }
 
-const getUserPlants = (userId) => {
-    getEdiblePlants(); // por ahora. TODO: traer las plantas del usuario
+const getUserPlants = () => {
+    getEdiblePlants("myPlantsContainer"); // por ahora. TODO: traer las plantas del usuario
 }
 
 const create404 = () => {} // TODO: crear 404
 
 const renderCard = (plant, containerID) => {
-    console.log(plant);
     const plantsContainer = document.getElementById(containerID);
-    const plantCard = `
+    let plantCard = `
         <div class="col s12 m6 l4">
             <div class="card">
                 <div class="card-image">
-                    <img src='${(plant.default_image.small_url ? plant.default_image.small_url : '/img/placeholder.png')} '>
+                    <img src='${(plant.default_image ? (plant.default_image.small_url ? plant.default_image.small_url : plant.default_image.original_url) : '/img/placeholder.svg')} '>
                     <span class="card-title">${plant.common_name}</span>
                 </div>
-                <div class="card-content">
+                <div class="card-content">`
+                if (containerID == "ediblePlantsContainer"){
+                    plantCard += `
                     <p>${plant.scientific_name[0]}</p>
                     <p class="card-list"><img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"> ${plant.watering}</p>
                     <p class="card-list"><img class="list-icon" src="/img/icon-sun.svg" alt="icon sun"> ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "" )}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "" )}</li>
                     <p class="card-list"><img class="list-icon" src="/img/icon-cycle.svg" alt="icon cycle">  ${plant.cycle}</p>
+                    `
+                } else if (containerID == "myPlantsContainer") { // TODO: reemplazar los values con los datos guardados del usuario
+                    plantCard += `
+                    <p>${plant.scientific_name[0]}</p>
+                   
+                    <p class="card-list">
+                        <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding"><span>05.06.2024</span>
+                        <form>
+                            <label for="seedDate">New Date</label>
+                            <input type="date" name="seedDate" id ="seedDate">
+                            <button type="submit">Save</button>
+                        </form>
+                    </p>
+                    <p class="card-list">
+                        <img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"><span>05.06.2024</span>
+                        <form>
+                            <label for="wateringDate">New Date</label>
+                            <input type="date" name="wateringDate" id ="wateringDate">
+                            <button type="submit">Save</button>
+                        </form>
+                    </p>
+                    `
+                };
+                plantCard += `
                 </div>
                 <div class="card-action">
-                    <a class="green-text text-accent-4" href="plant.html?id=${plant.id}">Learn more</a>
+                    <a class="green-text text-accent-4" href="plant.html?id=${plant.id}">See Details</a>
                 </div>
             </div>
         </div>
@@ -118,18 +156,14 @@ const renderDetails = (plant) => {
     $('.tabs').tabs();
 }
 
-/* <ul>
-
-</ul> */
-
 
 window.addEventListener("DOMContentLoaded", (e) => {
     if (window.location.href.includes('index.html')){
-        getEdiblePlants();
+        getEdiblePlants("ediblePlantsContainer");
     } else if (window.location.href.includes('plant.html')) {
         const searchParams = new URLSearchParams(window.location.search);
         getPlant(searchParams.get('id'));
     } else if (window.location.href.includes('my-plants.html')){
-        getUserPlants(userId); // corregir cunado tengamos la autentificación de usuario
+        getUserPlants(); // corregir cunado tengamos la autentificación de usuario
     }
 });
