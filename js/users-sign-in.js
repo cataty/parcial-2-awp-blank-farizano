@@ -26,10 +26,12 @@ document.getElementById('signup-form').addEventListener('submit', function (e) {
     .then(function (userCredential) {
       const user = userCredential.user;
       console.log('User created:', user);
+      M.toast({html: `${user.email} logged`}); //Shows the user logged email into a Toast
     })
     .catch(function (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
       console.error('Error creating user:', errorCode, errorMessage);
+      M.toast({html: `Error: ${errorMessage}`}); //Shows if there are errors in the process
     });
 });
