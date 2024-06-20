@@ -17,20 +17,19 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-document.getElementById('signup-form').addEventListener('submit', async (e) => {
+document.getElementById('signup-form').addEventListener('submit', function (e) {
   e.preventDefault();
   const email = document.getElementById('username').value.trim(); // Trim spaces
   const password = document.getElementById('password').value;
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    console.log('User created:', user);
-    alert('User created successfully');
-  } catch (error) {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    console.error('Error creating user:', errorCode, errorMessage);
-    alert(`Error: ${errorMessage}`);
-  }
+  createUserWithEmailAndPassword(auth, email, password)
+    .then(function (userCredential) {
+      const user = userCredential.user;
+      console.log('User created:', user);
+    })
+    .catch(function (error) {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.error('Error creating user:', errorCode, errorMessage);
+    });
 });
