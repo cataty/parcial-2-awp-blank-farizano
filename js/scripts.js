@@ -155,11 +155,15 @@ const renderDetails = (plant) => {
         </div>
     `
     plantContainer.innerHTML += plantCard;
+
     var options = {
         duration: 300,
         swipeable: true
     };
     M.Tabs.init(document.getElementById('plantDetailTabs'), options);
+
+    const preloader = document.querySelector(".preloader-wrapper");
+    document.getElementById("plantDetailContainer").removeChild(preloader);
 }
 
 
@@ -173,17 +177,5 @@ window.addEventListener("DOMContentLoaded", (e) => {
     } else if (window.location.href.includes('my-plants.html')){
         getUserPlants(); // corregir cunado tengamos la autentificación de usuario
     };
-
-    // initialize Materialize elements
-
-    try {
-        var tabs = document.querySelectorAll('.tabs');
-        var instance = M.Tabs.init(tabs);
-      } catch (error) {
-        console.error('Error initializing tabs:', error);
-      };
-
-    var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems);
 });
 
