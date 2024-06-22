@@ -156,8 +156,46 @@ h2.card-title {
     font-family: var(--extra-font);
 }
 
+.tabs .tab a {
+  color:var(--darker-green)
+}
+
+.tabs .tab a:hover, .tabs .tab a.active {
+  background-color: transparent;
+  color: var(--darker-green);
+}
+
+.tabs .tab a:focus, .tabs .tab a:focus.active {
+background-color: var(--lightest-green);
+}
+
+.tabs .indicator{
+  background-color: var(--green);
+}
+
 .card-content > p:first-of-type{
     font-style: italic;
     margin-bottom: 1rem;
+}
+
+.card-content form{
+  display:flex;
+}
+
+.card-content form label{
+  flex-basis:10%;
+  padding-top:1rem;
+}
+
+.card-content form input[type="date"]{
+  flex-basis:50%;
+  margin:1rem;
+}
+
+.card-content form button {
+  flex-basis:30%;
+  border-radius:0;
+  margin-top:0.5rem;
+  height:3rem;
 }
 

@@ -1,6 +1,7 @@
-if ('serviceWorker' in navigator){
+/* if ('serviceWorker' in navigator){
     navigator.serviceWorker.register('../sw.js');
-}
+} */
+
 const token = "sk-cIK4666b199c48f9f5915";
 
 const replacePlaceholderImgs = () => { // para implementar eventualmente
@@ -33,7 +34,7 @@ const getPlant = async (id) => {
     .then(response => {
         if (response.status === 200) {
             response.json()
-            .then(response => renderDetails(response));
+            .then(response => renderDetails(response))
         } else if (response.status === 404) {
             create404(plant);
         };
@@ -72,16 +73,18 @@ const renderCard = (plant, containerID) => {
                         <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding"><span>05.06.2024</span>
                         <form>
                             <label for="seedDate">New Date</label>
-                            <input type="date" name="seedDate" id ="seedDate">
-                            <button type="submit">Save</button>
+                            <div>
+                            <input type="text" class="datepicker" name="seedDate" id="seedDate">
+                            <button class="green accent-3 white-text" type="submit">Save</button>
+                            <div>
                         </form>
                     </p>
                     <p class="card-list">
                         <img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"><span>05.06.2024</span>
                         <form>
                             <label for="wateringDate">New Date</label>
-                            <input type="date" name="wateringDate" id ="wateringDate">
-                            <button type="submit">Save</button>
+                            <input type="text" class="datepicker" name="wateringDate" id="wateringDate">
+                            <button class="green accent-3 white-text" type="submit">Save</button>
                         </form>
                     </p>
                     `
@@ -111,7 +114,7 @@ const renderDetails = (plant) => {
                     <p>${plant.description}</p>
                 </div>
                 <div class="card-tabs">
-                    <ul class="tabs tabs-fixed-width">
+                    <ul class="tabs tabs-fixed-width" id="plantDetailTabs">
                         <li class="tab"><a href="#plant-data">Data</a></li>
                         <li class="tab"><a href="#plant-care">Care</a></li>
                         <li class="tab"><a href="#test6">Test 3</a></li>
@@ -152,13 +155,16 @@ const renderDetails = (plant) => {
         </div>
     `
     plantContainer.innerHTML += plantCard;
-    var instance = M.Tabs.init(document.querySelector('.card-tabs'), {});
-    instance.select('tab_id');
-    $('.tabs').tabs();
+    var options = {
+        duration: 300,
+        swipeable: true
+    };
+    M.Tabs.init(document.getElementById('plantDetailTabs'), options);
 }
 
 
 window.addEventListener("DOMContentLoaded", (e) => {
+
     if (window.location.href.includes('index.html')){
         getEdiblePlants("ediblePlantsContainer");
     } else if (window.location.href.includes('plant.html')) {
@@ -166,5 +172,18 @@ window.addEventListener("DOMContentLoaded", (e) => {
         getPlant(searchParams.get('id'));
     } else if (window.location.href.includes('my-plants.html')){
         getUserPlants(); // corregir cunado tengamos la autentificación de usuario
-    }
+    };
+
+    // initialize Materialize elements
+
+    try {
+        var tabs = document.querySelectorAll('.tabs');
+        var instance = M.Tabs.init(tabs);
+      } catch (error) {
+        console.error('Error initializing tabs:', error);
+      };
+
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems);
 });
+
