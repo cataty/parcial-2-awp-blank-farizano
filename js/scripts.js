@@ -65,7 +65,10 @@ const getEdiblePlants = async (containerId) => {
     .then(response => response.data.forEach(plant => {
         renderCard(plant, containerId);
     }))
-    .catch(error => console.log('error', error));
+    .catch(error => {
+        console.log('error', error);
+        M.toast({html: `Error fetching plant data. Please try again later.`})
+    });
     const preloader = document.querySelector(".preloader-wrapper");
     document.getElementById(containerId).removeChild(preloader);
 }
@@ -80,7 +83,10 @@ const getPlant = async (id) => {
             create404(plant);
         };
     })
-    .catch(error => console.log('error', error));
+    .catch(error => {
+        console.log('error', error);
+        M.toast({html: `Error fetching plant details.  Please try again later.`})
+    });
 }
 
 const getUserPlants = () => {
