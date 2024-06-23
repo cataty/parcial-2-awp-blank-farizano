@@ -18,6 +18,45 @@ const replacePlaceholderImgs = () => { // para implementar eventualmente
     });
 }
 
+// botón & prompt de instalación
+
+const installButton = document.getElementById("installButton");
+let installEvent;
+
+window.addEventListener("beforeinstallprompt", (event) => {
+    installEvent = event;
+});
+
+installButton.addEventListener("click", async () => {
+    if(installEvent && installEvent.prompt) {
+        console.log(installEvent);
+        await installEvent.prompt()
+        .then((result) => {
+            const selectedOption = result.outcome;
+            console.log("selected option: ", selectedOption)
+            if(selectedOption == "dismissed") {
+                console.log("install cancelled");
+            } else if(selectedOption == "accepted") {
+                console.log("install complete")
+                hideInstallButton();
+            }
+        })
+        .catch((error) => console.log("error during install"))
+    }
+})
+
+const hideInstallButton = () => {
+    installButton.style.display = "none";
+}
+
+setTimeout( () => {
+    if(installEvent == null) {
+        hideInstallButton();
+    }
+}, 200);
+
+// traer y mostrar contenido
+
 const getEdiblePlants = async (containerId) => {
     await fetch(`https://perenual.com/api/species-list?key=${token}&edible=1`)
     .then(response => response.json())
@@ -68,19 +107,22 @@ const renderCard = (plant, containerID) => {
                 } else if (containerID == "myPlantsContainer") { // TODO: reemplazar los values con los datos guardados del usuario
                     plantCard += `
                     <p>${plant.scientific_name[0]}</p>
-                   
-                    <p class="card-list">
-                        <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding"><span>05.06.2024</span>
+                    <div class="card-list">
+                        <p>
+                            <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding">
+                            <span>05.06.2024</span>
+                        </p>
                         <form>
                             <label for="seedDate">New Date</label>
-                            <div>
                             <input type="text" class="datepicker" name="seedDate" id="seedDate">
                             <button class="green accent-3 white-text" type="submit">Save</button>
-                            <div>
                         </form>
-                    </p>
+                    </div>
                     <p class="card-list">
-                        <img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"><span>05.06.2024</span>
+                        <div>
+                            <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding">
+                            <span>05.06.2024</span>
+                        </div>
                         <form>
                             <label for="wateringDate">New Date</label>
                             <input type="text" class="datepicker" name="wateringDate" id="wateringDate">
@@ -98,6 +140,14 @@ const renderCard = (plant, containerID) => {
         </div>
     `
     plantsContainer.innerHTML += plantCard;
+    if (document.querySelector('.datepicker')){
+    var options = {
+        autoClose: true,
+        format: 'dd.mm.yyyy',
+    };
+    var elems = document.querySelectorAll('.datepicker');
+    var instances = M.Datepicker.init(elems, options);
+    }
 }
 
 const renderDetails = (plant) => {

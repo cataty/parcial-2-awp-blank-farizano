@@ -187,13 +187,14 @@ background-color: var(--lightest-green);
   padding-top:1rem;
 }
 
-.card-content form input[type="date"]{
+.card-content form input[type="date"], .card-content form .datepicker{
+  max-width:80px;
   flex-basis:50%;
   margin:1rem;
 }
 
 .card-content form button {
-  flex-basis:30%;
+  flex-basis: 60px;
   border-radius:0;
   margin-top:0.5rem;
   height:3rem;
