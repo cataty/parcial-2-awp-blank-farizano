@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!--Import Google Icon Font-->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
     <!-- Compiled and minified Materilize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
@@ -14,59 +16,46 @@
     <title>Seed2Plate - Plant Details </title>
     <link rel="icon" type="image/x-icon" href="/img/favicon.png">
 </head>
+
 <body>
     <nav class="green accent-4">
         <div class="nav-wrapper">
-          <a href="/index.html" class="brand-logo"
-            ><img src="/img/logo.svg" alt="Seed2Plate logo">Seed2Plate</a
-          >
-          <ul class="right hide-on-med-and-down">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="#ediblePlantsContainer">Edible Plants</a></li>
-            <li><a href="my-plants.html">My Plants</a></li>
-            <li>
-              <a
-                href="log-in.html"
-                class="waves-effect waves-light btn green accent-5"
-                ><i class="material-icons left"
-                  ><span class="material-symbols-outlined"> login</span></i
-                >Login</a
-              >
-            </li>
-            <li>
-              <a class="waves-effect waves-light btn green accent-5 installButton"
-                ><i class="material-icons left"
-                  ><span class="material-symbols-outlined"> download</span></i
-                >Install</a
-              >
-            </li>
-          </ul>
-          <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons"><span class="material-symbols-outlined">menu</span></i></a>
+            <a href="/index.html" class="brand-logo"><img src="/img/logo.svg" alt="Seed2Plate logo">Seed2Plate</a>
+            <ul class="right hide-on-med-and-down">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#ediblePlantsContainer">Edible Plants</a></li>
+                <li><a href="my-plants.html">My Plants</a></li>
+                <li>
+                    <a href="log-in.html" class="waves-effect waves-light btn green accent-3"><i
+                            class="material-icons left"><span class="material-symbols-outlined">
+                                login</span></i>Login</a>
+                </li>
+                <li>
+                    <a class="waves-effect waves-light btn green accent-3 installButton"><i
+                            class="material-icons left"><span class="material-symbols-outlined">
+                                download</span></i>Install</a>
+                </li>
+            </ul>
+            <a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="material-icons"><span
+                        class="material-symbols-outlined">menu</span></i></a>
         </div>
-      </nav>
-  
-      <ul id="nav-mobile" class="sidenav">
+    </nav>
+
+    <ul id="nav-mobile" class="sidenav">
+        <li><a href="/index.html" class="brand-logo"><img src="/img/favicon.png" alt="Seed2Plate logo"></a></li>
         <li><a href="index.html">Home</a></li>
         <li><a href="#ediblePlantsContainer">Edible Plants</a></li>
         <li><a href="my-plants.html">My Plants</a></li>
         <li>
-          <a
-            href="log-in.html"
-            class="waves-effect waves-light btn green accent-5"
-            ><i class="material-icons left"
-              ><span class="material-symbols-outlined"> login</span></i
-            >Login</a
-          >
+            <a href="log-in.html" class="waves-effect waves-light btn green accent-3"><i
+                    class="material-icons left"><span class="material-symbols-outlined"> login</span></i>Login</a>
         </li>
         <li>
-          <a class="waves-effect waves-light btn green accent-5 installButton"
-            ><i class="material-icons left"
-              ><span class="material-symbols-outlined"> download</span></i
-            >Install</a
-          >
+            <a class="waves-effect waves-light btn green accent-3 installButton"><i class="material-icons left"><span
+                        class="material-symbols-outlined"> download</span></i>Install</a>
         </li>
-      </ul>
-  
+    </ul>
+
     <div class="container">
 
         <h1 class="sanchez-regular">Plant Details</h1>
@@ -74,13 +63,15 @@
         <div class="row" id="plantDetailContainer">
             <div class="preloader-wrapper big active">
                 <div class="spinner-layer spinner-green-only">
-                        <div class="circle-clipper left">
+                    <div class="circle-clipper left">
                         <div class="circle"></div>
-                        </div><div class="gap-patch">
+                    </div>
+                    <div class="gap-patch">
                         <div class="circle"></div>
-                        </div><div class="circle-clipper right">
+                    </div>
+                    <div class="circle-clipper right">
                         <div class="circle"></div>
-                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -89,55 +80,57 @@
 
 
 
-<!-- JQuery CDN -->
-<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
-<!-- Compiled and minified Materialize JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<!-- Firebase -->
-<script type="module">
+    <!-- JQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+    <!-- Compiled and minified Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Firebase -->
+    <script type="module">
 
-    // Import the functions you need from the SDKs you need
-    
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
-    
-    // TODO: Add SDKs for Firebase products that you want to use
-    
-    // https://firebase.google.com/docs/web/setup#available-libraries
-    
-    
-    // Your web app's Firebase configuration
-    
-    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    
-    const firebaseConfig = {
-    
-        apiKey: "AIzaSyAR1u1nmM-1c_9-7bxN5AAaj_GQkQ2gHmQ",
-    
-        authDomain: "parcial-2-pwa-ef0fa.firebaseapp.com",
-    
-        projectId: "parcial-2-pwa-ef0fa",
-    
-        storageBucket: "parcial-2-pwa-ef0fa.appspot.com",
-    
-        messagingSenderId: "1038427681040",
-    
-        appId: "1:1038427681040:web:3550c1f0d3f1d9adb23595",
-    
-        measurementId: "G-800DBFPJ7W"
-    
-    };
-    
-    
-    // Initialize Firebase
-    
-    const app = initializeApp(firebaseConfig);
-    
-    const analytics = getAnalytics(app);
-    
-</script>
-<!-- Custom -->
-<script src="/js/scripts.js"></script>
+        // Import the functions you need from the SDKs you need
+
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
+
+        // TODO: Add SDKs for Firebase products that you want to use
+
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+
+        // Your web app's Firebase configuration
+
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+
+        const firebaseConfig = {
+
+            apiKey: "AIzaSyAR1u1nmM-1c_9-7bxN5AAaj_GQkQ2gHmQ",
+
+            authDomain: "parcial-2-pwa-ef0fa.firebaseapp.com",
+
+            projectId: "parcial-2-pwa-ef0fa",
+
+            storageBucket: "parcial-2-pwa-ef0fa.appspot.com",
+
+            messagingSenderId: "1038427681040",
+
+            appId: "1:1038427681040:web:3550c1f0d3f1d9adb23595",
+
+            measurementId: "G-800DBFPJ7W"
+
+        };
+
+
+        // Initialize Firebase
+
+        const app = initializeApp(firebaseConfig);
+
+        const analytics = getAnalytics(app);
+
+    </script>
+    <!-- Custom -->
+    <script src="/js/scripts.js"></script>
 </body>
+
 </html>
