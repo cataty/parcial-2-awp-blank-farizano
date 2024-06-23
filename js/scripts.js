@@ -20,34 +20,36 @@ const replacePlaceholderImgs = () => { // para implementar eventualmente
 
 // botón & prompt de instalación
 
-const installButton = document.getElementById("installButton");
+const installButtons = document.querySelectorAll(".installButton");
 let installEvent;
 
 window.addEventListener("beforeinstallprompt", (event) => {
     installEvent = event;
 });
 
-installButton.addEventListener("click", async () => {
-    if(installEvent && installEvent.prompt) {
-        console.log(installEvent);
-        await installEvent.prompt()
-        .then((result) => {
-            const selectedOption = result.outcome;
-            console.log("selected option: ", selectedOption)
-            if(selectedOption == "dismissed") {
-                console.log("install cancelled");
-            } else if(selectedOption == "accepted") {
-                console.log("install complete")
-                hideInstallButton();
-            }
-        })
-        .catch((error) => console.log("error during install"))
-    }
-})
+installButtons.forEach(installButton => {
+    installButton.addEventListener("click", async () => {
+        if(installEvent && installEvent.prompt) {
+            console.log(installEvent);
+            await installEvent.prompt()
+            .then((result) => {
+                const selectedOption = result.outcome;
+                console.log("selected option: ", selectedOption)
+                if(selectedOption == "dismissed") {
+                    console.log("install cancelled");
+                } else if(selectedOption == "accepted") {
+                    console.log("install complete")
+                    hideInstallButton();
+                }
+            })
+            .catch((error) => console.log("error during install"))
+        }
+    })
+});
 
 const hideInstallButton = () => {
-    installButton.style.display = "none";
-}
+    installButtons.forEach(installButton => {installButton.style.display = "none"});
+};
 
 setTimeout( () => {
     if(installEvent == null) {
@@ -227,5 +229,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
     } else if (window.location.href.includes('my-plants.html')){
         getUserPlants(); // corregir cunado tengamos la autentificación de usuario
     };
+    var elems = document.querySelectorAll('.sidenav');
+    var instances = M.Sidenav.init(elems);
 });
 
