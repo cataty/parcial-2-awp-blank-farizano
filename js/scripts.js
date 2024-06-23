@@ -161,6 +161,7 @@ const renderDetails = (plant) => {
                 <div class="card-image">
                     <img src="${plant.default_image.regular_url}" alt="${plant.name}">
                     <h2 class="card-title">${plant.common_name}</h2>
+                    <a class="btn-floating btn-large halfway-fab waves-effect waves-light green accent-3"><i class="material-icons"><span class="material-symbols-outlined">add</span></i></a>
                 </div>
                 <div class="card-content">
                     <p>${plant.description}</p>
