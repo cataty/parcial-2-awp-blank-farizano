@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -17,21 +17,21 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-document.getElementById('signup-form').addEventListener('submit', function (e) {
+document.getElementById('login-form').addEventListener('submit', function (e) {
   e.preventDefault();
   const email = document.getElementById('username').value.trim(); // Trim spaces
   const password = document.getElementById('password').value;
 
-  createUserWithEmailAndPassword(auth, email, password)
+  signInWithEmailAndPassword(auth, email, password)
     .then(function (userCredential) {
       const user = userCredential.user;
-      console.log('User created:', user);
-      M.toast({html: `${user.email} logged`}); //Shows the user logged email into a Toast
+      console.log('User signed in:', user);
+      M.toast({html: `${user.email} logged in`}); // Shows the user logged email into a Toast
     })
     .catch(function (error) {
       const errorCode = error.code;
       const errorMessage = error.message;
-      console.error('Error creating user:', errorCode, errorMessage);
-      M.toast({html: `Error: ${errorMessage}`}); //Shows if there are errors in the process
+      console.error('Error signing in:', errorCode, errorMessage);
+      M.toast({html: `Error: ${errorMessage}`}); // Shows if there are errors in the process
     });
 });
