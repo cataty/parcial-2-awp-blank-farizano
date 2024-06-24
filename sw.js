@@ -24,10 +24,10 @@ self.addEventListener('install', event => {
     console.log("serviceworker installed");
     event.waitUntil(
         caches.has("seed2plate").then(isInstalled => {
-            if(!isInstalled) {
+            if (!isInstalled) {
                 return caches.open("seed2plate").then(cache => {
                     cache.addAll(cachedItems);
-                })        
+                })
             }
         })
     );
@@ -37,14 +37,21 @@ self.addEventListener('activate', event => {
     console.log("serviceworker active")
 });
 
-self.addEventListener('fetch', (event) => {
-    const query = event.request;
-    const cachedResponse = caches.match(query).then(async (response) => {
-        if(response) return response; // si está en el cache, traer del cache
-        const newResponse = await fetch(query.url);
-        const cache = await caches.open("seed2plate");
-        await cache.put(query, newResponse.clone());
-        return newResponse;
-    })
-    event.respondWith(cachedResponse);
-})
+self.addEventListener('fetch', event => {
+    if (event.request.method !== 'GET') { // no se procesan requests POST con métodos del cache
+        return;
+    }
+    event.respondWith(
+        caches.open('seed2plate').then(cache => {
+            return cache.match(event.request).then(response => {
+                if (response) {
+                    return response;
+                }
+                return fetch(event.request).then(networkResponse => {
+                    cache.put(event.request, networkResponse.clone());
+                    return networkResponse;
+                });
+            });
+        })
+    );
+});

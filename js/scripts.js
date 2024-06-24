@@ -1,6 +1,11 @@
-/* if ('serviceWorker' in navigator){
-    navigator.serviceWorker.register('../sw.js');
-} */
+if ('serviceWorker' in navigator){
+    navigator.serviceWorker.register('../sw.js').then((register) => {
+        M.toast({html: `Offline mode active`})
+    })
+    .catch((error) => {
+        console.log("error: ", error)
+    })
+}
 
 const token = "sk-cIK4666b199c48f9f5915";
 
@@ -21,7 +26,7 @@ const replacePlaceholderImgs = () => { // para implementar eventualmente
 // botón & prompt de instalación
 
 const installButtons = document.querySelectorAll(".installButton");
-let installEvent;
+let installEvent = null;
 
 window.addEventListener("beforeinstallprompt", (event) => {
     installEvent = event;
