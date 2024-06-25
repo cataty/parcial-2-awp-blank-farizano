@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -16,17 +17,19 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-document.getElementById('login-form').addEventListener('submit', function (e) {
+document.getElementById('register-form').addEventListener('submit', async function (e) {
   e.preventDefault();
-  const email = document.getElementById('username').value.trim();
+  const email = document.getElementById('email').value.trim(); // Trim spaces
   const password = document.getElementById('password').value;
+  const username = document.getElementById('username').value.trim();
   const errorList = document.getElementById('error-list');
   errorList.innerHTML = ''; // Limpiar errores anteriores
 
   // Validaciones
   const errors = [];
-  if (!email || !password) {
+  if (!email || !password || !username) {
     errors.push('All fields are required');
   }
 
@@ -47,18 +50,24 @@ document.getElementById('login-form').addEventListener('submit', function (e) {
     return;
   }
 
-  signInWithEmailAndPassword(auth, email, password)
-    .then(function (userCredential) {
-      const user = userCredential.user;
-      console.log('User signed in:', user);
-      M.toast({html: `${user.email} logged in`});
-    })
-    .catch(function (error) {
-      console.error('Error signing in:', error);
-      M.toast({html: `Error: ${error.message}`});
-    });
-});
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log('User registered:', user);
 
+    // Store additional user information in Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      username: username,
+      email: email,
+      createdAt: new Date()
+    });
+    console.log('User info added to Firestore');
+    M.toast({html: `${user.email} registered successfully`});
+  } catch (error) {
+    console.error('Error registering user:', error);
+    M.toast({html: `Error: ${error.message}`});
+  }
+});
 
 function validateEmail(email) {
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
