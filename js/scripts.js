@@ -96,13 +96,24 @@ const getPlant = async (id) => {
 }
 
 const getUserPlants = () => {
-    getEdiblePlants("myPlantsContainer"); // por ahora. TODO: traer las plantas del usuario
+    const allPlantIds = Object.keys(localStorage);
+    allPlantIds.forEach(userPlantId => {
+        fetch(`https://perenual.com/api/species/details/${userPlantId}?key=${token}`)
+            .then(response => {
+                if (response.status === 200) {
+                    response.json().then(response => renderUserPlantCard(response))
+                }
+            })
+    });
+    const preloader = document.querySelector(".preloader-wrapper");
+    document.getElementById(containerId).removeChild(preloader);
 }
+
 
 const create404 = () => { } // TODO: crear 404
 
-const renderCard = (plant, containerID) => {
-    const plantsContainer = document.getElementById(containerID);
+const renderCard = (plant) => {
+    const plantsContainer = document.getElementById("ediblePlantsContainer");
     let plantCard = `
         <div class="col s12 m6 l4">
             <div class="card">
@@ -110,16 +121,32 @@ const renderCard = (plant, containerID) => {
                     <img src='${(plant.default_image ? (plant.default_image.small_url ? plant.default_image.small_url : plant.default_image.original_url) : '/img/placeholder.svg')} '>
                     <span class="card-title">${plant.common_name}</span>
                 </div>
-                <div class="card-content">`
-    if (containerID == "ediblePlantsContainer") {
-        plantCard += `
+                <div class="card-content">
                     <p>${plant.scientific_name[0]}</p>
                     <p class="card-list"><img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"> ${plant.watering}</p>
                     <p class="card-list"><img class="list-icon" src="/img/icon-sun.svg" alt="icon sun"> ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "")}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "")}</li>
                     <p class="card-list"><img class="list-icon" src="/img/icon-cycle.svg" alt="icon cycle">  ${plant.cycle}</p>
-                    `
-    } else if (containerID == "myPlantsContainer") { // TODO: reemplazar los values con los datos guardados del usuario
-        plantCard += `
+                </div>
+                <div class="card-action">
+                    <a class="green-text text-accent-4" href="plant.html?id=${plant.id}">See Details</a>
+                </div>
+            </div>
+        </div>
+        `
+
+    plantsContainer.innerHTML += plantCard;
+}
+
+const renderUserPlantCard = (plant) => {
+    const plantsContainer = document.getElementById("myPlantsContainer");
+    let plantCard = `
+        <div class="col s12 m6 l4">
+            <div class="card">
+                <div class="card-image">
+                    <img src='${(plant.default_image ? (plant.default_image.small_url ? plant.default_image.small_url : plant.default_image.original_url) : '/img/placeholder.svg')} '>
+                    <span class="card-title">${plant.common_name}</span>
+                </div>
+                <div class="card-content">
                     <p>${plant.scientific_name[0]}</p>
                     <div class="card-list">
                         <p>
@@ -132,7 +159,7 @@ const renderCard = (plant, containerID) => {
                             <button class="green accent-3 white-text" type="submit">Save</button>
                         </form>
                     </div>
-                    <p class="card-list">
+                    <div class="card-list">
                         <div>
                             <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding">
                             <span>05.06.2024</span>
@@ -142,18 +169,16 @@ const renderCard = (plant, containerID) => {
                             <input type="text" class="datepicker" name="wateringDate" id="wateringDate">
                             <button class="green accent-3 white-text" type="submit">Save</button>
                         </form>
-                    </p>
-                    `
-    };
-    plantCard += `
+                    </div>
                 </div>
                 <div class="card-action">
                     <a class="green-text text-accent-4" href="plant.html?id=${plant.id}">See Details</a>
                 </div>
             </div>
         </div>
-    `
+        `
     plantsContainer.innerHTML += plantCard;
+
     if (document.querySelector('.datepicker')) {
         var options = {
             autoClose: true,
@@ -162,7 +187,7 @@ const renderCard = (plant, containerID) => {
         var elems = document.querySelectorAll('.datepicker');
         var instances = M.Datepicker.init(elems, options);
     }
-}
+};
 
 const renderDetails = (plant) => {
     console.log(plant);
