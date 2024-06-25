@@ -80,7 +80,7 @@
           <form class="col s12" id="register-form">
             <div class="row">
               <div class="input-field col s12">
-                <input id="email" type="email" class="validate" required />
+                <input id="email" type="email" class="validate" />
                 <label for="email">Email</label>
               </div>
             </div>
@@ -91,7 +91,6 @@
                   id="password"
                   type="password"
                   class="validate"
-                  required
                 />
                 <label for="password">Password</label>
               </div>
@@ -111,6 +110,10 @@
           </form>
           <div class="row center-align">
             <p>Already have an account? <a href="log-in.html" style="color: blue;">Log in by clicking here</a>.</p>
+          </div>
+
+          <div class="row">
+            <ul id="error-list" class="collection" style="color: red;"></ul>
           </div>
         </div>
       </div>

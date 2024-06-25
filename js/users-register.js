@@ -19,35 +19,57 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-document.getElementById('register-form').addEventListener('submit', function (e) {
+document.getElementById('register-form').addEventListener('submit', async function (e) {
   e.preventDefault();
   const email = document.getElementById('email').value.trim(); // Trim spaces
   const password = document.getElementById('password').value;
   const username = document.getElementById('username').value.trim();
+  const errorList = document.getElementById('error-list');
+  errorList.innerHTML = ''; // Limpiar errores anteriores
 
-  createUserWithEmailAndPassword(auth, email, password)
-    .then(async function (userCredential) {
-      const user = userCredential.user;
-      console.log('User registered:', user);
+  // Validaciones
+  const errors = [];
+  if (!email || !password || !username) {
+    errors.push('All fields are required');
+  }
 
-      // Store additional user information in Firestore
-      try {
-        await setDoc(doc(db, "users", user.uid), {
-          username: username,
-          email: email,
-          createdAt: new Date()
-        });
-        console.log('User info added to Firestore');
-        M.toast({html: `${user.email} registered successfully`}); // Shows the user logged email into a Toast
-      } catch (firestoreError) {
-        console.error('Error adding user info to Firestore:', firestoreError);
-        M.toast({html: `Error: ${firestoreError.message}`}); // Shows if there are errors in the process
-      }
-    })
-    .catch(function (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error('Error registering user:', errorCode, errorMessage);
-      M.toast({html: `Error: ${errorMessage}`}); // Shows if there are errors in the process
+  if (!validateEmail(email)) {
+    errors.push('Invalid email format');
+  }
+
+  if (password.length < 3) {
+    errors.push('Password must be at least 3 characters');
+  }
+
+  if (errors.length > 0) {
+    errors.forEach(error => {
+      const li = document.createElement('li');
+      li.textContent = error;
+      errorList.appendChild(li);
     });
+    return;
+  }
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    console.log('User registered:', user);
+
+    // Store additional user information in Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      username: username,
+      email: email,
+      createdAt: new Date()
+    });
+    console.log('User info added to Firestore');
+    M.toast({html: `${user.email} registered successfully`});
+  } catch (error) {
+    console.error('Error registering user:', error);
+    M.toast({html: `Error: ${error.message}`});
+  }
 });
+
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}

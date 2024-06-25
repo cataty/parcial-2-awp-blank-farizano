@@ -19,19 +19,48 @@ const auth = getAuth(app);
 
 document.getElementById('login-form').addEventListener('submit', function (e) {
   e.preventDefault();
-  const email = document.getElementById('username').value.trim(); // Trim spaces
+  const email = document.getElementById('username').value.trim();
   const password = document.getElementById('password').value;
+  const errorList = document.getElementById('error-list');
+  errorList.innerHTML = ''; // Limpiar errores anteriores
+
+  // Validaciones
+  const errors = [];
+  if (!email || !password) {
+    errors.push('All fields are required');
+  }
+
+  if (!validateEmail(email)) {
+    errors.push('Invalid email format');
+  }
+
+  if (password.length < 3) {
+    errors.push('Password must be at least 3 characters');
+  }
+
+  if (errors.length > 0) {
+    errors.forEach(error => {
+      const li = document.createElement('li');
+      li.textContent = error;
+      errorList.appendChild(li);
+    });
+    return;
+  }
 
   signInWithEmailAndPassword(auth, email, password)
     .then(function (userCredential) {
       const user = userCredential.user;
       console.log('User signed in:', user);
-      M.toast({html: `${user.email} logged in`}); // Shows the user logged email into a Toast
+      M.toast({html: `${user.email} logged in`});
     })
     .catch(function (error) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      console.error('Error signing in:', errorCode, errorMessage);
-      M.toast({html: `Error: ${errorMessage}`}); // Shows if there are errors in the process
+      console.error('Error signing in:', error);
+      M.toast({html: `Error: ${error.message}`});
     });
 });
+
+
+function validateEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}
