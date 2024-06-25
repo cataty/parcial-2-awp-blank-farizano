@@ -1,10 +1,11 @@
-if ('serviceWorker' in navigator){
-    navigator.serviceWorker.register('../sw.js').then((register) => {
-        M.toast({html: `Offline mode active`})
-    })
-    .catch((error) => {
-        console.log("error: ", error)
-    })
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('../sw.js')
+        .then((register) => {
+            M.toast({ html: `Offline mode active` })
+        })
+        .catch((error) => {
+            console.log("error: ", error)
+        })
 }
 
 const token = "sk-cIK4666b199c48f9f5915";
@@ -15,8 +16,8 @@ const replacePlaceholderImgs = () => { // para implementar eventualmente
     const loadImages = (image) => {
         image.setAttribute("src", image.getAttribute("data-src"));
         image.onload = () => {
-        image.removeAttribute("data-src");
-    };
+            image.removeAttribute("data-src");
+        };
     };
     imagesToLoad.forEach((img) => {
         loadImages(img);
@@ -26,7 +27,7 @@ const replacePlaceholderImgs = () => { // para implementar eventualmente
 // botón & prompt de instalación
 
 const installButtons = document.querySelectorAll(".installButton");
-let installEvent = null;
+let installEvent;
 
 window.addEventListener("beforeinstallprompt", (event) => {
     installEvent = event;
@@ -34,30 +35,30 @@ window.addEventListener("beforeinstallprompt", (event) => {
 
 installButtons.forEach(installButton => {
     installButton.addEventListener("click", async () => {
-        if(installEvent && installEvent.prompt) {
+        if (installEvent && installEvent.prompt) {
             console.log(installEvent);
             await installEvent.prompt()
-            .then((result) => {
-                const selectedOption = result.outcome;
-                console.log("selected option: ", selectedOption)
-                if(selectedOption == "dismissed") {
-                    console.log("install cancelled");
-                } else if(selectedOption == "accepted") {
-                    console.log("install complete")
-                    hideInstallButton();
-                }
-            })
-            .catch((error) => console.log("error during install"))
+                .then((result) => {
+                    const selectedOption = result.outcome;
+                    console.log("selected option: ", selectedOption)
+                    if (selectedOption == "dismissed") {
+                        console.log("install cancelled");
+                    } else if (selectedOption == "accepted") {
+                        console.log("install complete")
+                        hideInstallButton();
+                    }
+                })
+                .catch((error) => console.log("error during install"))
         }
     })
 });
 
 const hideInstallButton = () => {
-    installButtons.forEach(installButton => {installButton.style.display = "none"});
+    installButtons.forEach(installButton => { installButton.style.display = "none" });
 };
 
-setTimeout( () => {
-    if(installEvent == null) {
+setTimeout(() => {
+    if (installEvent == null) {
         hideInstallButton();
     }
 }, 200);
@@ -66,39 +67,39 @@ setTimeout( () => {
 
 const getEdiblePlants = async (containerId) => {
     await fetch(`https://perenual.com/api/species-list?key=${token}&edible=1`)
-    .then(response => response.json())
-    .then(response => response.data.forEach(plant => {
-        renderCard(plant, containerId);
-    }))
-    .catch(error => {
-        console.log('error', error);
-        M.toast({html: `Error fetching plant data. Please try again later.`})
-    });
+        .then(response => response.json())
+        .then(response => response.data.forEach(plant => {
+            renderCard(plant, containerId);
+        }))
+        .catch(error => {
+            console.log('error', error);
+            M.toast({ html: `Error fetching plant data. Please try again later.` })
+        });
     const preloader = document.querySelector(".preloader-wrapper");
     document.getElementById(containerId).removeChild(preloader);
 }
 
 const getPlant = async (id) => {
     await fetch(`https://perenual.com/api/species/details/${id}?key=${token}`)
-    .then(response => {
-        if (response.status === 200) {
-            response.json()
-            .then(response => renderDetails(response))
-        } else if (response.status === 404) {
-            create404(plant);
-        };
-    })
-    .catch(error => {
-        console.log('error', error);
-        M.toast({html: `Error fetching plant details.  Please try again later.`})
-    });
+        .then(response => {
+            if (response.status === 200) {
+                response.json()
+                    .then(response => renderDetails(response))
+            } else if (response.status === 404) {
+                create404(plant);
+            };
+        })
+        .catch(error => {
+            console.log('error', error);
+            M.toast({ html: `Error fetching plant details.  Please try again later.` })
+        });
 }
 
 const getUserPlants = () => {
     getEdiblePlants("myPlantsContainer"); // por ahora. TODO: traer las plantas del usuario
 }
 
-const create404 = () => {} // TODO: crear 404
+const create404 = () => { } // TODO: crear 404
 
 const renderCard = (plant, containerID) => {
     const plantsContainer = document.getElementById(containerID);
@@ -110,15 +111,15 @@ const renderCard = (plant, containerID) => {
                     <span class="card-title">${plant.common_name}</span>
                 </div>
                 <div class="card-content">`
-                if (containerID == "ediblePlantsContainer"){
-                    plantCard += `
+    if (containerID == "ediblePlantsContainer") {
+        plantCard += `
                     <p>${plant.scientific_name[0]}</p>
                     <p class="card-list"><img class="list-icon" src="/img/icon-watering.svg" alt="icon watering"> ${plant.watering}</p>
-                    <p class="card-list"><img class="list-icon" src="/img/icon-sun.svg" alt="icon sun"> ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "" )}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "" )}</li>
+                    <p class="card-list"><img class="list-icon" src="/img/icon-sun.svg" alt="icon sun"> ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "")}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "")}</li>
                     <p class="card-list"><img class="list-icon" src="/img/icon-cycle.svg" alt="icon cycle">  ${plant.cycle}</p>
                     `
-                } else if (containerID == "myPlantsContainer") { // TODO: reemplazar los values con los datos guardados del usuario
-                    plantCard += `
+    } else if (containerID == "myPlantsContainer") { // TODO: reemplazar los values con los datos guardados del usuario
+        plantCard += `
                     <p>${plant.scientific_name[0]}</p>
                     <div class="card-list">
                         <p>
@@ -143,8 +144,8 @@ const renderCard = (plant, containerID) => {
                         </form>
                     </p>
                     `
-                };
-                plantCard += `
+    };
+    plantCard += `
                 </div>
                 <div class="card-action">
                     <a class="green-text text-accent-4" href="plant.html?id=${plant.id}">See Details</a>
@@ -153,13 +154,13 @@ const renderCard = (plant, containerID) => {
         </div>
     `
     plantsContainer.innerHTML += plantCard;
-    if (document.querySelector('.datepicker')){
-    var options = {
-        autoClose: true,
-        format: 'dd.mm.yyyy',
-    };
-    var elems = document.querySelectorAll('.datepicker');
-    var instances = M.Datepicker.init(elems, options);
+    if (document.querySelector('.datepicker')) {
+        var options = {
+            autoClose: true,
+            format: 'dd.mm.yyyy',
+        };
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, options);
     }
 }
 
@@ -194,7 +195,7 @@ const renderDetails = (plant) => {
                             <li>growth rate:  ${(plant.growth_rate)}</li>
                             <li>care level: ${(plant.care_level ? plant.care_level : "?")}</li>
                             <li>harvest season: ${(plant.harvest_season ? plant.harvest_season : "?")}</li>
-                            <li>propagatation:  ${(plant.propagation[0])}${(plant.propagation[1] ? ", " + plant.propagation[1] : "" )}${(plant.propagation[2] ? ", " + plant.propagation[2] : "" )}</li>
+                            <li>propagatation:  ${(plant.propagation[0])}${(plant.propagation[1] ? ", " + plant.propagation[1] : "")}${(plant.propagation[2] ? ", " + plant.propagation[2] : "")}</li>
                         </ul>
                     </div>
                     <div id="plant-care">
@@ -208,9 +209,9 @@ const renderDetails = (plant) => {
                         <h3>Conditions and Care</h3>
                         <ul>
                             <li>soil: ${plant.soil}</li>
-                            <li>sunlight:  ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "" )}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "" )}</li> 
+                            <li>sunlight:  ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "")}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "")}</li> 
                             <li>pruning: ${(plant.pruning_count.amount ? plant.pruning_count.amount : "?")} ${plant.pruning_count.interval} </li>
-                            <li>pruning months: ${(plant.pruning_month[0])}${(plant.pruning_month[1] ? ", " + plant.pruning_month[1] : "" )}${(plant.pruning_month[2] ? ", " + plant.pruning_month[2] : "" )}${(plant.pruning_month[3] ? ", " + plant.pruning_month[3] : "" )}</li>
+                            <li>pruning months: ${(plant.pruning_month[0])}${(plant.pruning_month[1] ? ", " + plant.pruning_month[1] : "")}${(plant.pruning_month[2] ? ", " + plant.pruning_month[2] : "")}${(plant.pruning_month[3] ? ", " + plant.pruning_month[3] : "")}</li>
                         </ul>
                     </div>
                     <div id="test6">Test 3</div>
@@ -219,6 +220,19 @@ const renderDetails = (plant) => {
         </div>
     `
     plantContainer.innerHTML += plantCard;
+
+    document.querySelector(".halfway-fab").addEventListener("click", event => {
+        const plantToAdd = {
+            name: plant.common_name,
+            img: plant.default_image.regular_url,
+            quantity: 0,
+            seedDate: 0,
+            wateringDate: 0
+        };
+        console.log(event, plantToAdd);
+        localStorage.setItem(plant.id, JSON.stringify(plantToAdd));
+    });
+
 
     var options = {
         duration: 300,
@@ -230,15 +244,17 @@ const renderDetails = (plant) => {
     document.getElementById("plantDetailContainer").removeChild(preloader);
 }
 
+// acciones de usuario
+
 
 window.addEventListener("DOMContentLoaded", (e) => {
 
-    if (window.location.href.includes('index.html')){
+    if (window.location.href.includes('index.html')) {
         getEdiblePlants("ediblePlantsContainer");
     } else if (window.location.href.includes('plant.html')) {
         const searchParams = new URLSearchParams(window.location.search);
         getPlant(searchParams.get('id'));
-    } else if (window.location.href.includes('my-plants.html')){
+    } else if (window.location.href.includes('my-plants.html')) {
         getUserPlants(); // corregir cunado tengamos la autentificación de usuario
     };
     var elems = document.querySelectorAll('.sidenav');
