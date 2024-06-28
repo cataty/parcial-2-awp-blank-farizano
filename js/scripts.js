@@ -106,7 +106,7 @@ const getUserPlants = () => {
             })
     });
     const preloader = document.querySelector(".preloader-wrapper");
-    document.getElementById(containerId).removeChild(preloader);
+    document.getElementById("myPlantsContainer").removeChild(preloader);
 }
 
 
@@ -139,8 +139,10 @@ const renderCard = (plant) => {
 
 const renderUserPlantCard = (plant) => {
     const plantsContainer = document.getElementById("myPlantsContainer");
+    userPlantData = JSON.parse(localStorage.getItem(`${plant.id}`));
+    console.log(userPlantData);
     let plantCard = `
-        <div class="col s12 m6 l4">
+        <div class="col s12 m6">
             <div class="card">
                 <div class="card-image">
                     <img src='${(plant.default_image ? (plant.default_image.small_url ? plant.default_image.small_url : plant.default_image.original_url) : '/img/placeholder.svg')} '>
@@ -148,26 +150,36 @@ const renderUserPlantCard = (plant) => {
                 </div>
                 <div class="card-content">
                     <p>${plant.scientific_name[0]}</p>
+                        <div class="card-list">
+                        <p>
+                            <img class="list-icon" src="/img/icon-quantity.svg" alt="icon seeding">
+                            <span>${userPlantData.quantity}</span>
+                        </p>
+                        <form action="#">
+                            <p class="range-field">
+                            <input type="range" id="quantity" min="0" max="50" class="tooltipped" data-position="top" data-tooltip="How many plants do you have?">
+                            </p>
+                            <button id="quantitySubmit" class="green accent-3 white-text" type="submit">  <i class="material-icons"><span class="material-symbols-outlined">playlist_add_check</span></i></button>
+                        </form>
+                    </div>
                     <div class="card-list">
                         <p>
                             <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding">
-                            <span>05.06.2024</span>
+                            <span>${userPlantData.seedingDate}</span>
                         </p>
                         <form>
-                            <label for="seedDate">New Date</label>
-                            <input type="text" class="datepicker" name="seedDate" id="seedDate">
-                            <button class="green accent-3 white-text" type="submit">Save</button>
+                          <input type="date" name="seedDate" id="seedingDate" class="tooltipped" data-position="top" data-tooltip="Seeding Date"><label for="seedDate" aria-hidden="true" hidden>New Date</label></input>
+                            <button id="seedingDateSubmit" class="green accent-3 white-text" type="submit">  <i class="material-icons"><span class="material-symbols-outlined">playlist_add_check</span></i></button>
                         </form>
                     </div>
                     <div class="card-list">
                         <div>
-                            <img class="list-icon" src="/img/icon-seed.svg" alt="icon seeding">
-                            <span>05.06.2024</span>
+                            <img class="list-icon" src="/img/icon-watering.svg" alt="icon watering">
+                            <span>${userPlantData.wateringDate}</span>
                         </div>
                         <form>
-                            <label for="wateringDate">New Date</label>
-                            <input type="text" class="datepicker" name="wateringDate" id="wateringDate">
-                            <button class="green accent-3 white-text" type="submit">Save</button>
+                            <input type="date" name="wateringDate" id="wateringDate" class="tooltipped" data-position="top" data-tooltip="Last Watering Date"><label for="wateringDate" aria-hidden="true" hidden>New Date</label></input>
+                            <button id="wateringDateSubmit" class="green accent-3 white-text" type="submit">  <i class="material-icons"><span class="material-symbols-outlined">playlist_add_check</span></i></button>
                         </form>
                     </div>
                 </div>
@@ -176,8 +188,27 @@ const renderUserPlantCard = (plant) => {
                 </div>
             </div>
         </div>
-        `
+        `;
     plantsContainer.innerHTML += plantCard;
+
+    document.getElementById("quantitySubmit").addEventListener("click", event => {
+        event.preventDefault;
+        userPlantData.quantity = document.getElementById("quantity").value;
+        localStorage.setItem(plant.id, JSON.stringify(userPlantData));
+    });
+
+    document.getElementById("seedingDateSubmit").addEventListener("click", event => {
+        event.preventDefault;
+        console.log(document.getElementById("seedingDate").value);
+        userPlantData.seedingDate = document.getElementById("seedingDate").value;
+        localStorage.setItem(plant.id, JSON.stringify(userPlantData));
+    });
+    document.getElementById("wateringDateSubmit").addEventListener("click", event => {
+        event.preventDefault;
+        console.log(document.getElementById("wateringDate").value);
+        userPlantData.wateringDate = document.getElementById("wateringDate").value;
+        localStorage.setItem(plant.id, JSON.stringify(userPlantData));
+    });
 
     if (document.querySelector('.datepicker')) {
         var options = {
@@ -186,11 +217,16 @@ const renderUserPlantCard = (plant) => {
         };
         var elems = document.querySelectorAll('.datepicker');
         var instances = M.Datepicker.init(elems, options);
-    }
+    };
+
+        var elems = document.querySelectorAll('.tooltipped');
+        var instances = M.Tooltip.init(elems, options);
 };
+
 
 const renderDetails = (plant) => {
     console.log(plant);
+    
     const plantContainer = document.getElementById("plantDetailContainer");
     const plantCard = `
         <div class="col s12 m12 l12">
@@ -206,8 +242,8 @@ const renderDetails = (plant) => {
                 <div class="card-tabs">
                     <ul class="tabs tabs-fixed-width" id="plantDetailTabs">
                         <li class="tab"><a href="#plant-data">Data</a></li>
-                        <li class="tab"><a href="#plant-care">Care</a></li>
-                        <li class="tab"><a href="#test6">Test 3</a></li>
+                        <li class="tab"><a href="#plant-care">Conditions & Care</a></li>
+                        <li class="tab"><a href="#plant-guide">Care Guide</a></li>
                     </ul>
                 </div>
                 <div class="card-content grey lighten-4">
@@ -215,7 +251,7 @@ const renderDetails = (plant) => {
                         <h3>Plant Data</h3>
                         <ul>
                             <li>type: ${plant.type}</li>
-                            <li>family: ${plant.family}</li>
+                            <li>family: ${(plant.family ? plant.family : "?")}</li>
                             <li>cycle:  ${(plant.cycle)}</li>
                             <li>growth rate:  ${(plant.growth_rate)}</li>
                             <li>care level: ${(plant.care_level ? plant.care_level : "?")}</li>
@@ -233,18 +269,34 @@ const renderDetails = (plant) => {
                         </ul>
                         <h3>Conditions and Care</h3>
                         <ul>
-                            <li>soil: ${plant.soil}</li>
+                            <li>soil: ${(plant.soil ? plant.soil : "any")}</li>
                             <li>sunlight:  ${(plant.sunlight[0])}${(plant.sunlight[1] ? ", " + plant.sunlight[1] : "")}${(plant.sunlight[2] ? ", " + plant.sunlight[2] : "")}</li> 
-                            <li>pruning: ${(plant.pruning_count.amount ? plant.pruning_count.amount : "?")} ${plant.pruning_count.interval} </li>
+                            <li>pruning amount: ${(plant.pruning_count.amount ? (plant.pruning_count.amount, " ", plant.pruning_count.interval) : "?")} </li>
                             <li>pruning months: ${(plant.pruning_month[0])}${(plant.pruning_month[1] ? ", " + plant.pruning_month[1] : "")}${(plant.pruning_month[2] ? ", " + plant.pruning_month[2] : "")}${(plant.pruning_month[3] ? ", " + plant.pruning_month[3] : "")}</li>
                         </ul>
                     </div>
-                    <div id="test6">Test 3</div>
+                    <div id="plant-guide">Guide</div>
                 </div>
             </div>
         </div>
     `
     plantContainer.innerHTML += plantCard;
+
+
+    fetch(`https://perenual.com/api/species-care-guide-list?key=${token}&species_id=${plant.id}`)
+    .then(response => {
+        if (response.status === 200) {
+            response.json()
+                .then(response => {
+                    console.log(response);
+                    let guideDetails = response[data][0].section[1];
+                    document.selectElementbyId("plant-guide").innerHTML = guideDetails;
+                })
+    }})
+    .catch(error => {
+        console.log('error', error);
+        M.toast({ html: `Error fetching plant care guide.  Please try again later.` })
+    });
 
     document.querySelector(".halfway-fab").addEventListener("click", event => {
         const plantToAdd = {
@@ -254,8 +306,8 @@ const renderDetails = (plant) => {
             seedDate: 0,
             wateringDate: 0
         };
-        console.log(event, plantToAdd);
         localStorage.setItem(plant.id, JSON.stringify(plantToAdd));
+        M.toast({ html: `added to "My Plants"` })
     });
 
 
@@ -267,7 +319,7 @@ const renderDetails = (plant) => {
 
     const preloader = document.querySelector(".preloader-wrapper");
     document.getElementById("plantDetailContainer").removeChild(preloader);
-}
+};
 
 // acciones de usuario
 
@@ -280,7 +332,7 @@ window.addEventListener("DOMContentLoaded", (e) => {
         const searchParams = new URLSearchParams(window.location.search);
         getPlant(searchParams.get('id'));
     } else if (window.location.href.includes('my-plants.html')) {
-        getUserPlants(); // corregir cunado tengamos la autentificación de usuario
+        getUserPlants();
     };
     var elems = document.querySelectorAll('.sidenav');
     var instances = M.Sidenav.init(elems);
